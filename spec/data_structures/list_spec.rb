@@ -26,20 +26,20 @@ RSpec.describe DataStructures::List do
       it 'returns list with valid node' do
         list.append(value)
 
-        expect(list.first).to be_kind_of(DataStructures::List::Node)
-        expect(list.first.value).to eq(value)
+        expect(list.head).to be_kind_of(DataStructures::List::Node)
+        expect(list.head.value).to eq(value)
       end
     end
 
     context 'when multiple nodes' do
       context 'when second node is inserted' do
-        let!(:first_node) { list.append(5).first }
+        let!(:head_node) { list.append(5).head }
         let(:next_value) { 10 }
 
-        it 'sets pointer for the first node' do
+        it 'sets pointer for the head node' do
           list.append(next_value)
 
-          expect(first_node.next_node.value).to eq(next_value)
+          expect(head_node.next_node.value).to eq(next_value)
         end
       end
     end
@@ -76,9 +76,9 @@ RSpec.describe DataStructures::List do
       it 'returns right node' do
         list.append(2)
 
-        first_node = list.first
+        head_node = list.head
 
-        expect(list.reverse).to eq(list.first)
+        expect(list.reverse).to eq(head_node)
       end
     end
 
@@ -94,15 +94,15 @@ RSpec.describe DataStructures::List do
       it 'chages nodes order' do
         list.reverse
 
-        expect(list.first.value).to eq(values.last)
+        expect(list.head.value).to eq(values.last)
       end
 
       it 'changes indexes of nodes' do
         list.reverse
 
-        expect(list.first.index).to eq(0)
-        expect(list.first.next_node.index).to eq(1)
-        expect(list.first.next_node.next_node.index).to eq(2)
+        expect(list.head.index).to eq(0)
+        expect(list.head.next_node.index).to eq(1)
+        expect(list.head.next_node.next_node.index).to eq(2)
       end
     end
   end

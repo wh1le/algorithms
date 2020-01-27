@@ -4,46 +4,51 @@ require_relative './list/node'
 
 module DataStructures
   class List
-    attr_reader :first, :depth
+    attr_reader :head, :depth
 
     def initialize
-      @first = nil
-      @first_setted = false
+      @head = nil
+      @last_setted = nil
       @depth = 0
     end
 
     def reverse
-      raise "List is empty" unless @first
+      raise "List is empty" unless @head
 
-      @first = reverse_recoursion(@first)
+      @head = reverse_recursion(@head)
     end
 
     def append(value)
-      if @first
-        @depth += 1
-        last.next_node = Node.new(value, @depth)
+      @depth += 1 if @head
+
+      node = Node.new(value, @depth)
+
+      if @head
+        @last_setted.next_node = node
       else
-        @first = Node.new(value, @depth)
+        @head = node
       end
+
+      @last_setted = node
 
       self
     end
 
-    def last
-      return nil unless @first
+    def last_node
+      return nil unless @head
 
-      last_node
+      last_node_recursion
     end
 
     def to_a
-      return [] unless @first
+      return [] unless @head
 
-      array_recoursion
+      array_recursion
     end
 
     private
 
-    def reverse_recoursion(current_node = nil)
+    def reverse_recursion(current_node = nil)
       current_node.index = @depth - current_node.index
 
       return current_node unless current_node&.next_node
@@ -51,7 +56,7 @@ module DataStructures
       next_node = current_node.next_node
 
 
-      new_head = reverse_recoursion(next_node)
+      new_head = reverse_recursion(next_node)
 
       next_node.next_node = current_node
 
@@ -60,22 +65,22 @@ module DataStructures
       new_head
     end
 
-    def array_recoursion(node = nil, result = [])
-      current_node = node || @first
+    def array_recursion(node = nil, result = [])
+      current_node = node || @head
 
       result = [*result, current_node.value]
 
       return result unless current_node.next_node
 
-      array_recoursion(current_node.next_node, result)
+      array_recursion(current_node.next_node, result)
     end
 
-    def last_node(node = nil)
-      current_node = node || @first
+    def last_node_recursion(node = nil)
+      current_node = node || @head
 
       return current_node unless current_node.next_node
 
-      last_node(current_node.next_node)
+      last_node_recursion(current_node.next_node)
     end
   end
 end
